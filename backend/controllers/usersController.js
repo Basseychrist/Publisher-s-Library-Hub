@@ -66,3 +66,28 @@ exports.createUser = async (req, res) => {
     res.status(400).json({ error: "Failed to create user" });
   }
 };
+
+exports.updateUser = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const { display_name, first_name, last_name } = req.body;
+    await user.update({ display_name, first_name, last_name });
+    res.json(user);
+  } catch (err) {
+    res.status(400).json({ error: "Failed to update user" });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    await user.destroy();
+    res.json({ message: "User deleted" });
+  } catch (err) {
+    res.status(400).json({ error: "Failed to delete user" });
+  }
+};

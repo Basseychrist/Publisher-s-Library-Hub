@@ -2,19 +2,16 @@ require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const passport = require("passport");
-const bodyParser = require("body-parser");
 const path = require("path");
 const testRoutes = require("./routes/testRoutes");
 const usersController = require("./controllers/usersController");
 const booksController = require("./controllers/booksController");
 const errorHandler = require("./middleware/errorHandler");
 
-const app = express();
-
 // Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
@@ -78,17 +75,21 @@ app.delete("/books/:id", ensureAuthenticated, booksController.deleteBook);
 
 // Test routes
 app.use("/test", testRoutes);
+app.use("/book-pdfs", require("./routes/bookPdfRoute"));
 
 // ===== 5. SWAGGER =====
-require("./swagger")(app);
+const setupSwagger = require("./swagger");
+setupSwagger(app);
+
+// Set EJS as the view engine
+app.set("view engine", "ejs");
+
+// Set the views directory (adjust path to point to Publisher-s-Library-Hub\views)
+app.set("views", path.join(__dirname, "..", "views"));
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.render("index"); // Renders views/index.ejs
 });
-// app.get("/health", (req, res) => {
-//   res.status(200).json({ status: "OK", db: !!app.locals.db });
-// });
-
 
 // Error handler (should be last)
 app.use(errorHandler);
@@ -97,10 +98,4 @@ app.use(errorHandler);
 app.get("/success", (req, res) => res.send("Sign in successful!"));
 app.get("/login", (req, res) => res.send("Login failed or required."));
 
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-module.exports = { app };
+module.exports = app;

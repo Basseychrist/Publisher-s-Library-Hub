@@ -1,32 +1,16 @@
-const { Pool } = require("pg")
-require("dotenv").config()
+const { Sequelize } = require("sequelize");
+require("dotenv").config();
 
-let pool
-if (process.env.NODE_ENV === "development") {
-  pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: false, // No SSL for local development
-  })
-} else {
-  pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+const sequelize = new Sequelize(process.env.DATABASE_URI, {
+  dialect: "postgres",
+  protocol: "postgres",
+  logging: false,
+  dialectOptions: {
     ssl: {
-      rejectUnauthorized: false, // Required for Render.com
+      require: true,
+      rejectUnauthorized: false,
     },
-  })
-}
-
-
-// Added for troubleshooting queries during development
-module.exports = {
-  async query(text, params) {
-    try {
-      const res = await pool.query(text, params)
-      console.log("executed query", { text })
-      return res
-    } catch (error) {
-      console.error("error in query", { text })
-      throw error
-    }
   },
-}
+});
+
+module.exports = sequelize;
