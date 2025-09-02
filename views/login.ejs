@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    
+    <div class="login-container">
+      <h2>Please Login to View Dashboard</h2>
+      <% if (error) { %>
+      <div class="error"><%= error %></div>
+      <% } %>
+      <form action="/auth/google" method="get">
+        <button type="submit" class="button">Sign in with Google</button>
+      </form>
+    </div>
+  </body>
+</html>

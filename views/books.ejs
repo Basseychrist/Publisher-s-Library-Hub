@@ -1,0 +1,62 @@
+<%- include('partials/head') %> 
+
+<h2 class="page-title">Your Books</h2>
+<a href="/books/new" id="button-book" class="button">Create New Book</a>
+<table class="pdf-table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% books.forEach(function(book, idx) { %>
+    <tr>
+      <td><%= book.title %></td>
+      <td><%= book.author %></td>
+      <td>
+        <button
+          type="button"
+          class="button"
+          onclick="document.getElementById('desc-<%= idx %>').style.display='block'"
+        >
+          Show Description
+        </button>
+        <div
+          id="desc-<%= idx %>"
+          style="
+            display: none;
+            margin-top: 5px;
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 6px;
+          "
+        >
+          <%= book.description %>
+          <button
+            type="button"
+            class="button"
+            style="margin-top: 8px"
+            onclick="document.getElementById('desc-<%= idx %>').style.display='none'"
+          >
+            Hide
+          </button>
+        </div>
+      </td>
+      <td>
+        <a href="/books/<%= book.id %>/edit" class="button update">Edit</a>
+        <a
+          href="/books/<%= book.id %>/delete"
+          class="button delete"
+          onclick="return confirm('Delete this book?')"
+          >Delete</a
+        >
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+

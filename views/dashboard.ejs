@@ -1,0 +1,90 @@
+<div class="welcome animated-welcome">
+  Welcome, <strong><%= user.first_name %> <%= user.last_name %></strong>!
+</div>
+
+<div class="section">
+  <h2 class="page-title">Your Books</h2>
+  <a href="/books/new" id="button-book" class="button">Create New Book</a>
+  <table class="pdf-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% books.forEach(function(book, idx) { %>
+      <tr>
+        <td><%= book.title %></td>
+        <td><%= book.author %></td>
+        <td>
+          <button
+            type="button"
+            class="button"
+            onclick="document.getElementById('desc-<%= idx %>').style.display='block'"
+          >
+            View Book
+          </button>
+          <div
+            id="desc-<%= idx %>"
+            style="
+              display: none;
+              margin-top: 5px;
+              background: #f8f8f8;
+              padding: 10px;
+              border-radius: 6px;
+            "
+          >
+            <strong>Description:</strong> <%= book.description %>
+            <br />
+            <button
+              type="button"
+              class="button"
+              style="margin-top: 8px"
+              onclick="document.getElementById('desc-<%= idx %>').style.display='none'"
+            >
+              Hide
+            </button>
+          </div>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h2 class="page-title">Your Book PDFs</h2>
+  <a href="/book-pdfs/upload" id="button-book" class="button">Upload New PDF</a>
+  <table class="pdf-table">
+    <thead>
+      <tr>
+        <th>Filename</th>
+        <th>Book Title</th>
+        <th>Uploaded At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% bookPdfs.forEach(function(pdf) { %>
+      <tr>
+        <td><%= pdf.filename %></td>
+        <td><%= pdf.book ? pdf.book.title : 'N/A' %></td>
+        <td><%= pdf.uploaded_at %></td>
+        <td>
+          <a href="/book-pdfs/<%= pdf.id %>/download" class="button"
+            >Download</a
+          >
+          <a href="/book-pdfs/<%= pdf.id %>/edit" class="button update"
+            >Update</a
+          >
+          <a href="/book-pdfs/<%= pdf.id %>/delete" class="button delete"
+            >Delete</a
+          >
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>

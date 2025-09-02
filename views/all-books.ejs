@@ -1,0 +1,52 @@
+
+
+<h2 class="page-title"">All Users' Books</h2>
+<table class="pdf-table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% books.forEach(function(book, idx) { %>
+    <tr>
+      <td><%= book.title %></td>
+      <td><%= book.author %></td>
+      <td>
+        <button
+          type="button"
+          class="button"
+          onclick="document.getElementById('desc-<%= idx %>').style.display='block'"
+        >
+          Show Book
+        </button>
+        <div
+          id="desc-<%= idx %>"
+          style="
+            display: none;
+            margin-top: 5px;
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 6px;
+          "
+        >
+          <strong>Description:</strong> <%= book.description %>
+          <br />
+          <button
+            type="button"
+            class="button"
+            style="margin-top: 8px"
+            onclick="document.getElementById('desc-<%= idx %>').style.display='none'"
+          >
+            Hide
+          </button>
+        </div>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+

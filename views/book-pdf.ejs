@@ -1,0 +1,36 @@
+<% /* views/book-pdf.ejs */ %> 
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<h2 class="page-title">Your Books (PDF-Format)</h2>
+<a href="/book-pdfs/upload" id="button-book" class="button">Upload New PDF</a>
+<table class="pdf-table">
+  <thead>
+    <tr>
+      <th>Book Title</th>
+      <th>Filename</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% bookPdfs.forEach(function(pdf) { %>
+    <tr>
+      <td><%= pdf.book_title %></td>
+      <td><%= pdf.filename %></td>
+      <td>
+        <a href="/book-pdfs/<%= pdf.id %>/download" class="button">Download</a>
+        <a href="/book-pdfs/<%= pdf.id %>/edit" class="button">Edit</a>
+        <a
+          href="/book-pdfs/<%= pdf.id %>/delete"
+          class="button"
+          style="background: #c0392b"
+          onclick="return confirm('Delete this PDF?')"
+          >Delete</a
+        >
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('partials/footer') %>
