@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const usersController = require("../controllers/usersController");
+const Book = require("../models/booksModel");
+const BookPdf = require("../models/bookPdfModel");
 const {
   validateUser,
   validateIdParam,
@@ -10,8 +12,18 @@ const {
 // Optional: Middleware to protect routes
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) return next();
-  res.status(401).json({ error: "Unauthorized" });
+  res.redirect("/login"); // Redirect to login page if not authenticated
 }
+
+// --- Add this route BEFORE any route with /:id ---
+router.get("/books", ensureAuthenticated, async (req, res) => {
+  const books = await Book.findAll({ include: BookPdf });
+  res.render("users-books", {
+    title: "All Users' Books",
+    user: req.user,
+    books,
+  });
+});
 
 /**
  * @swagger

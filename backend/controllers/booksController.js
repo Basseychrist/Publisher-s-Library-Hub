@@ -14,13 +14,13 @@ exports.getAllBooks = async (req, res) => {
 exports.createBook = async (req, res) => {
   try {
     const { title, author, description } = req.body;
-    const book = await Book.create({
+    await Book.create({
       title,
       author,
       description,
-      created_by: req.user.id, // assumes user is authenticated
+      created_by: req.user.id, // Use created_by if that's your user column
     });
-    res.status(201).json(book);
+    res.status(201).json({ success: true, message: "Book created" });
   } catch (err) {
     res.status(400).json({ error: "Failed to create book" });
   }

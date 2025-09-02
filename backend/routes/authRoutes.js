@@ -16,7 +16,7 @@ router.get(
     session: true,
   }),
   (req, res) => {
-    res.redirect("/success");
+    res.redirect("views/dashboard");
   }
 );
 

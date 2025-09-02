@@ -1,32 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const path = require("path");
 const bookPdfController = require("../controllers/bookPdfController");
 const ensureAuthenticated = require("../middleware/auth");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "..", "uploads"));
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
-const upload = multer({
-  storage,
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype === "application/pdf") cb(null, true);
-    else cb(new Error("Only PDF files are allowed"));
-  },
-});
 
 /**
  * @swagger
  * tags:
  *   name: BookPDFs
  *   description: Book PDF management
- *
+ */
+
+/**
+ * @swagger
  * /book-pdfs:
  *   get:
  *     summary: Get all book PDFs
@@ -35,7 +20,7 @@ const upload = multer({
  *       200:
  *         description: List of book PDFs
  *   post:
- *     summary: Upload a PDF for a book
+ *     summary: Upload a new book PDF
  *     tags: [BookPDFs]
  *     security:
  *       - cookieAuth: []
@@ -57,7 +42,7 @@ const upload = multer({
  *
  * /book-pdfs/{id}:
  *   get:
- *     summary: Download a book PDF by ID
+ *     summary: Get a book PDF by ID
  *     tags: [BookPDFs]
  *     parameters:
  *       - in: path
@@ -67,9 +52,9 @@ const upload = multer({
  *           type: integer
  *     responses:
  *       200:
- *         description: PDF file
+ *         description: Book PDF found
  *   put:
- *     summary: Update PDF file info (not file content)
+ *     summary: Update a book PDF
  *     tags: [BookPDFs]
  *     security:
  *       - cookieAuth: []
@@ -90,9 +75,9 @@ const upload = multer({
  *                 type: string
  *     responses:
  *       200:
- *         description: PDF info updated
+ *         description: Book PDF updated
  *   delete:
- *     summary: Delete a PDF file
+ *     summary: Delete a book PDF
  *     tags: [BookPDFs]
  *     security:
  *       - cookieAuth: []
@@ -104,19 +89,19 @@ const upload = multer({
  *           type: integer
  *     responses:
  *       200:
- *         description: PDF deleted
+ *         description: Book PDF deleted
  */
 
-router.post(
-  "/",
+// Do NOT add any /book-pdfs/upload route here
+
+// Other API endpoints (if needed)
+router.get("/:id", bookPdfController.getBookPdf);
+router.put("/:id", ensureAuthenticated, bookPdfController.updateBookPdf);
+router.delete("/:id", ensureAuthenticated, bookPdfController.deleteBookPdf);
+router.get(
+  "/:id/download",
   ensureAuthenticated,
-  upload.single("file"),
-  bookPdfController.uploadPdf
+  bookPdfController.downloadBookPdf
 );
-router.get("/:id", bookPdfController.getBookPdf); // Returns metadata and download URL
-router.get("/:id/download", bookPdfController.downloadBookPdf); // Returns the actual PDF file
-router.put("/:id", ensureAuthenticated, bookPdfController.updatePdf);
-router.delete("/:id", ensureAuthenticated, bookPdfController.deletePdf);
-router.get("/", bookPdfController.getAllBookPdfs);
 
 module.exports = router;

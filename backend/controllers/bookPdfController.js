@@ -2,6 +2,17 @@ const BookPdf = require("../models/bookPdfModel");
 const Book = require("../models/booksModel");
 const path = require("path");
 
+// Get all book PDFs (API)
+exports.getAllBookPdfs = async (req, res) => {
+  try {
+    const pdfs = await BookPdf.findAll({ include: Book });
+    res.json(pdfs);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch book PDFs" });
+  }
+};
+
+// Create a new book PDF (API)
 exports.uploadPdf = async (req, res) => {
   try {
     if (!req.file) {
@@ -23,61 +34,52 @@ exports.uploadPdf = async (req, res) => {
       filepath: req.file.path,
       uploaded_by: req.user.id,
     });
-    res.status(201).json(pdf);
+    res.status(201).json({ success: true, message: "PDF uploaded", pdf });
   } catch (err) {
-    res.status(500).json({ error: err.message || "Failed to upload PDF" });
+    res.status(500).render("book-pdf-upload", {
+      title: "Upload Book PDF",
+      user: req.user,
+      books: await Book.findAll({ where: { created_by: req.user.id } }),
+      error: err.message || "Failed to upload PDF",
+    });
   }
 };
 
+// Get a single book PDF (API)
 exports.getBookPdf = async (req, res) => {
   try {
     const pdf = await BookPdf.findByPk(req.params.id, { include: Book });
     if (!pdf) return res.status(404).json({ error: "PDF not found" });
-
-    res.json({
-      id: pdf.id,
-      book_id: pdf.book_id,
-      filename: pdf.filename,
-      uploaded_by: pdf.uploaded_by,
-      uploaded_at: pdf.uploaded_at,
-      book: pdf.Book
-        ? { title: pdf.Book.title, author: pdf.Book.author }
-        : null,
-      url: `/book-pdfs/${pdf.id}/download`,
-    });
+    res.json(pdf);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch PDF" });
   }
 };
 
-// Add a download endpoint for actual file download
-exports.downloadBookPdf = async (req, res) => {
+// Update a book PDF (only by uploader)
+exports.updateBookPdf = async (req, res) => {
   try {
     const pdf = await BookPdf.findByPk(req.params.id);
     if (!pdf) return res.status(404).json({ error: "PDF not found" });
-    res.download(path.resolve(pdf.filepath), pdf.filename);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to download PDF" });
-  }
-};
+    if (pdf.uploaded_by !== req.user.id)
+      return res.status(403).json({ error: "Not authorized" });
 
-exports.updatePdf = async (req, res) => {
-  try {
-    const pdf = await BookPdf.findByPk(req.params.id);
-    if (!pdf) return res.status(404).json({ error: "PDF not found" });
+    pdf.filename = req.body.filename || pdf.filename;
+    await pdf.save();
 
-    const { filename } = req.body;
-    await pdf.update({ filename });
     res.json(pdf);
   } catch (err) {
     res.status(400).json({ error: "Failed to update PDF info" });
   }
 };
 
-exports.deletePdf = async (req, res) => {
+// Delete a book PDF (only by uploader)
+exports.deleteBookPdf = async (req, res) => {
   try {
     const pdf = await BookPdf.findByPk(req.params.id);
     if (!pdf) return res.status(404).json({ error: "PDF not found" });
+    if (pdf.uploaded_by !== req.user.id)
+      return res.status(403).json({ error: "Not authorized" });
 
     await pdf.destroy();
     res.json({ message: "PDF deleted" });
@@ -86,22 +88,13 @@ exports.deletePdf = async (req, res) => {
   }
 };
 
-exports.getAllBookPdfs = async (req, res) => {
+// Download endpoint for actual file download
+exports.downloadBookPdf = async (req, res) => {
   try {
-    const pdfs = await BookPdf.findAll({ include: Book });
-    const result = pdfs.map((pdf) => ({
-      id: pdf.id,
-      book_id: pdf.book_id,
-      filename: pdf.filename,
-      uploaded_by: pdf.uploaded_by,
-      uploaded_at: pdf.uploaded_at,
-      book: pdf.Book
-        ? { title: pdf.Book.title, author: pdf.Book.author }
-        : null,
-      url: `/book-pdfs/${pdf.id}/download`,
-    }));
-    res.json(result);
+    const pdf = await BookPdf.findByPk(req.params.id);
+    if (!pdf) return res.status(404).json({ error: "PDF not found" });
+    res.download(path.resolve(pdf.filepath), pdf.filename);
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch book PDFs" });
+    res.status(500).json({ error: "Failed to download PDF" });
   }
 };

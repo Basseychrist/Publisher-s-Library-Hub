@@ -23,6 +23,36 @@ const options = {
           name: "connect.sid",
         },
       },
+      schemas: {
+        Book: {
+          type: "object",
+          properties: {
+            id: {
+              type: "integer",
+            },
+            title: {
+              type: "string",
+            },
+            author: {
+              type: "string",
+            },
+            description: {
+              type: "string",
+            },
+            created_by: {
+              type: "integer",
+            },
+            created_at: {
+              type: "string",
+              format: "date-time",
+            },
+            updated_at: {
+              type: "string",
+              format: "date-time",
+            },
+          },
+        },
+      },
     },
     security: [{ cookieAuth: [] }],
   },
