@@ -14,6 +14,10 @@ const options = {
         url: "http://localhost:3000",
         description: "Local server",
       },
+      {
+        url: "https://publisher-s-library-hub-1.onrender.com",
+        description: "Production server",
+      },
     ],
     components: {
       securitySchemes: {
