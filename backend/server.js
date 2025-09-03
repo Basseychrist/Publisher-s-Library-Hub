@@ -7,7 +7,7 @@ const startServer = async () => {
     await sequelize.authenticate();
     console.log("Database connected successfully.");
 
-    const PORT = process.env.PORT || 3000;
+    const PORT = process.env.PORT ;
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
       console.log(`API Docs: http://localhost:${PORT}/api-docs`);
