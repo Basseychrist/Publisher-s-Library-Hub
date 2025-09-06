@@ -63,7 +63,7 @@ A Node.js/Express web application for managing and accessing a publisher's libra
 
 4. **Start the application:**
    ```sh
-   npm run start
+   sudo npm run start
    ```
    Or use PM2 for production:
    ```sh
@@ -77,9 +77,9 @@ A Node.js/Express web application for managing and accessing a publisher's libra
 ## Deployment
 
 - **EC2 Public URL:**  
-  `http://ec2-16-170-203-248.eu-north-1.compute.amazonaws.com:3000`
+  `https://ec2-16-170-203-248.eu-north-1.compute.amazonaws.com`
 - **Swagger API Docs:**  
-  `http://ec2-16-170-203-248.eu-north-1.compute.amazonaws.com:3000/api-docs`
+  `https://ec2-16-170-203-248.eu-north-1.compute.amazonaws.com/api-docs`
 
 **Make sure your EC2 security group allows inbound traffic on port 3000.**
 
