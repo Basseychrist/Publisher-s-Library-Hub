@@ -10,8 +10,9 @@ const startServer = async () => {
     const PORT = process.env.PORT ;
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
-      console.log(`API Docs: http://localhost:${PORT}/api-docs`);
-      console.log(`Local Host: http://localhost:${PORT}`);
+      console.log(`API Docs for render: http://localhost:${PORT}/api-docs`);
+      console.log(`Local Host for render: http://localhost:${PORT}`);
+      console.log(`EC2 Instance for AWS render: http://ec2-16-170-203-248.eu-north-1.compute.amazonaws.com:${PORT}`);
     });
   } catch (err) {
     console.error("Unable to connect to the database:", err);
