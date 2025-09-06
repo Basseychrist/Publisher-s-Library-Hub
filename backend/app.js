@@ -304,11 +304,11 @@ app.get("/books/:id/delete", ensureAuthenticated, async (req, res) => {
 
 // Place this FIRST
 app.get("/users/books", ensureAuthenticated, async (req, res) => {
-  const books = await Book.findAll({ include: BookPdf });
+  const bookPdfs = await BookPdf.findAll();
   res.render("users-books", {
-    title: "All Users' Books",
+    title: "All Users' PDF Books",
     user: req.user,
-    books,
+    bookPdfs,
   });
 });
 
