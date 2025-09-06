@@ -304,7 +304,7 @@ app.get("/books/:id/delete", ensureAuthenticated, async (req, res) => {
 
 // Place this FIRST
 app.get("/users/books", ensureAuthenticated, async (req, res) => {
-  const bookPdfs = await BookPdf.findAll();
+  const bookPdfs = await BookPdf.findAll(); // Make sure BookPdf is required at the top
   res.render("users-books", {
     title: "All Users' PDF Books",
     user: req.user,

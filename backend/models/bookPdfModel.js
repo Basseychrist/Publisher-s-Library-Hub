@@ -37,7 +37,8 @@ const BookPdf = sequelize.define(
   }
 );
 
-BookPdf.belongsTo(Book, { foreignKey: "book_id" });
-Book.hasMany(BookPdf, { foreignKey: "book_id" });
+// Remove or comment out these lines:
+// BookPdf.belongsTo(Book, { foreignKey: "book_id" });
+// Book.hasMany(BookPdf, { foreignKey: "book_id" });
 
 module.exports = BookPdf;
