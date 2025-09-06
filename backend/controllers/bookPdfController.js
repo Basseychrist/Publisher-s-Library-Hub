@@ -48,7 +48,7 @@ exports.uploadPdf = async (req, res) => {
 // Get a single book PDF (API)
 exports.getBookPdf = async (req, res) => {
   try {
-    const pdf = await BookPdf.findByPk(req.params.id, { include: Book });
+    const pdf = await BookPdf.findByPk(req.params.id);
     if (!pdf) return res.status(404).json({ error: "PDF not found" });
     res.json(pdf);
   } catch (err) {
