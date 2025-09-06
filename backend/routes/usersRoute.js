@@ -17,11 +17,11 @@ function ensureAuthenticated(req, res, next) {
 
 // --- Add this route BEFORE any route with /:id ---
 router.get("/books", ensureAuthenticated, async (req, res) => {
-  const books = await Book.findAll();
+  const bookPdfs = await BookPdf.findAll();
   res.render("users-books", {
-    title: "All Users' Books",
+    title: "All Users' PDF Books",
     user: req.user,
-    books,
+    bookPdfs,
   });
 });
 

@@ -15,7 +15,7 @@
     <tr>
       <td><%= pdf.filename %></td>
       <td><%= pdf.description %></td>
-      <td><%= pdf.user_id || pdf.created_by %></td>
+      <td><%= pdf.uploaded_by %></td>
       <td>
         <a href="/book-pdfs/<%= pdf.id %>/download" class="button">
           Download <%= pdf.filename %>
