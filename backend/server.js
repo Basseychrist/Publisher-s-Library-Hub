@@ -1,6 +1,34 @@
 require("dotenv").config();
+const fs = require("fs");
+const http = require("http");
+const https = require("https");
+const path = require("path");
 const app = require("./app");
 const sequelize = require("./config/database");
+
+const PORT = process.env.PORT || 3000;
+const SSL_PORT = 443;
+
+// Path to your SSL certificate files
+const sslOptions = {
+  key: fs.readFileSync("/etc/ssl/private/privkey.pem"), // Update with your actual path
+  cert: fs.readFileSync("/etc/ssl/certs/fullchain.pem"), // Update with your actual path
+};
+
+// Start HTTPS server
+https.createServer(sslOptions, app).listen(SSL_PORT, () => {
+  console.log(`HTTPS Server running on port ${SSL_PORT}`);
+});
+
+// (Optional) Redirect HTTP to HTTPS
+http
+  .createServer((req, res) => {
+    res.writeHead(301, { Location: "https://" + req.headers.host + req.url });
+    res.end();
+  })
+  .listen(PORT, () => {
+    console.log(`HTTP redirect server running on port ${PORT}`);
+  });
 
 const startServer = async () => {
   try {
