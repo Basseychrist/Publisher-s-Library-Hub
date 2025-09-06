@@ -5,7 +5,7 @@ const path = require("path");
 // Get all book PDFs (API)
 exports.getAllBookPdfs = async (req, res) => {
   try {
-    const pdfs = await BookPdf.findAll({ include: Book });
+    const pdfs = await BookPdf.findAll();
     res.json(pdfs);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch book PDFs" });
