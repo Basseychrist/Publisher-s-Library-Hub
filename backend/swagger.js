@@ -18,6 +18,10 @@ const options = {
         url: "https://publisher-s-library-hub-1.onrender.com",
         description: "Production server",
       },
+      {
+        "url": "http://ec2-16-170-203-248.eu-north-1.compute.amazonaws.com:3000",
+        "description": "AWS EC2 Instance"
+      }
     ],
     components: {
       securitySchemes: {
