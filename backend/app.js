@@ -221,7 +221,6 @@ app.get("/dashboard", ensureAuthenticated, async (req, res) => {
   const books = await Book.findAll({ where: { created_by: req.user.id } });
   const bookPdfs = await BookPdf.findAll({
     where: { uploaded_by: req.user.id },
-    include: Book,
   });
   res.render("dashboard", {
     title: "Dashboard",
