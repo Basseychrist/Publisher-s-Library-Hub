@@ -24,7 +24,6 @@ CREATE TABLE IF NOT EXISTS books (
 -- Book PDFs table
 CREATE TABLE IF NOT EXISTS book_pdfs (
     id SERIAL PRIMARY KEY,
-    book_id INTEGER REFERENCES books(id) ON DELETE CASCADE,
     filename VARCHAR(255) NOT NULL,
     filepath VARCHAR(255) NOT NULL,
     uploaded_by INTEGER REFERENCES users(id) ON DELETE SET NULL,

@@ -3,20 +3,12 @@ const sequelize = require("../config/database");
 const Book = require("./booksModel");
 
 const BookPdf = sequelize.define(
-  "BookPdf",
+  "book_pdfs",
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-    },
-    book_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "books",
-        key: "id",
-      },
     },
     filename: {
       type: DataTypes.STRING,
