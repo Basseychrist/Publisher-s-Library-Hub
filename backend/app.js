@@ -75,8 +75,7 @@ app.use("/test", testRoutes);
 // Place these BEFORE app.use("/book-pdfs", ...)
 app.get("/book-pdfs", ensureAuthenticated, async (req, res) => {
   const bookPdfs = await BookPdf.findAll({
-    where: { uploaded_by: req.user.id },
-    include: Book,
+    where: { uploaded_by: req.user.id }
   });
   res.render("book-pdf", {
     title: "Your Book PDFs",
