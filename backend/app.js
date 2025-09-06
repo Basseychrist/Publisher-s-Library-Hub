@@ -313,8 +313,7 @@ app.get("/users/books", ensureAuthenticated, async (req, res) => {
 // Place this BELOW
 app.get("/users/:id/books", ensureAuthenticated, async (req, res) => {
   const books = await Book.findAll({
-    where: { user_id: req.params.id },
-    include: BookPdf,
+    where: { user_id: req.params.id }
   });
   res.render("user-books", {
     title: "User's Books",
