@@ -19,7 +19,7 @@ const options = {
         description: "Production server",
       },
       {
-        "url": "http://ec2-16-170-203-248.eu-north-1.compute.amazonaws.com:3000",
+        "url": "http://ec2-16-170-203-248.eu-north-1.compute.amazonaws.com",
         "description": "AWS EC2 Instance"
       }
     ],
