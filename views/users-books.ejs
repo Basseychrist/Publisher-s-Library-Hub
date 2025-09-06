@@ -1,33 +1,27 @@
-<%- include('partials/head') %>
-<%- include('partials/header') %>
-
+<%- include('partials/head') %> <%- include('partials/header') %>
 
 <h2 class="page-title">All Users' PDF Books</h2>
 <table class="pdf-table">
   <thead>
     <tr>
-      <th>Title</th>
-      <th>Author</th>
-      <th>User ID</th>
+      <th>Filename</th>
       <th>Description</th>
-      <th>PDFs</th>
+      <th>User ID</th>
+      <th>Download</th>
     </tr>
   </thead>
   <tbody>
-    <% books.forEach(function(book) { 
-         if (book.BookPdfs && book.BookPdfs.length > 0) { %>
+    <% bookPdfs.forEach(function(pdf) { %>
     <tr>
-      <td><%= book.title %></td>
-      <td><%= book.author %></td>
-      <td><%= book.created_by || book.user_id %></td>
-      <td><%= book.description %></td>
+      <td><%= pdf.filename %></td>
+      <td><%= pdf.description %></td>
+      <td><%= pdf.user_id || pdf.created_by %></td>
       <td>
-        <% book.BookPdfs.forEach(function(pdf) { %>
-          <a href="/book-pdfs/<%= pdf.id %>/download" class="button">Download <%= pdf.filename %></a><br>
-        <% }) %>
+        <a href="/book-pdfs/<%= pdf.id %>/download" class="button">
+          Download <%= pdf.filename %>
+        </a>
       </td>
     </tr>
-    <% } // end if %>
     <% }) %>
   </tbody>
 </table>
